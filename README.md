@@ -1,34 +1,37 @@
-# hello-world
+# erp-os Frontend
 
 ## Project setup
 ```
-yarn install
+npm install
+```
+
+## Empfehlung
+Startet die Vue UI. Darüber könnt ihr die Verwaltung eurer vue-Projekte verwalten.
+```
+vue ui
 ```
 
 ### Compiles and hot-reloads for development
 ```
-yarn run serve
+vue serve
 ```
 
 ### Compiles and minifies for production
 ```
-yarn run build
+vue build
 ```
 
 ### Run your tests
 ```
-yarn run test
+vue test
 ```
 
 ### Lints and fixes files
 ```
-yarn run lint
+vue lint
 ```
 
 ### Run your unit tests
 ```
-yarn run test:unit
+vue run test:unit
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
