@@ -8792,6 +8792,11 @@ vue-cli-plugin-i18n@^0.6.0:
     vue-i18n "^8.0.0"
     vue-i18n-extract "^0.4.13"
 
+vue-cli-plugin-uikit@^1.0.15:
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/vue-cli-plugin-uikit/-/vue-cli-plugin-uikit-1.0.15.tgz#1aa596d9b9f26d18a6418b10891be2759dca7f55"
+  integrity sha512-bPEhcH3GWPKcsMQJ/fL61A6mUwtvxb2WTvh4jzh3/+ikLxPMRPmnwQt+tNfcCQenF7CvT6Ih7hw88voU5PCSGg==
+
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-2.0.3.tgz#c268c96c6d94cfe3d938a5f7593959b0ca3360d1"
