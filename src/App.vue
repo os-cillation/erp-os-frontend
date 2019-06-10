@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">API</router-link> |
+      <router-link to="/">Overview</router-link> |
+      <router-link to="/apiview">API</router-link> |
       <router-link to="/table">Table</router-link>
     </div>
     <router-view/>

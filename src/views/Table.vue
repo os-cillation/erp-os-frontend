@@ -1,6 +1,6 @@
 <template>
     <div id="tableApp">
-        <vk-table :data="vogel" :selected-rows.sync="selection"
+        <vk-table v-bind:data="vogel" :selected-rows.sync="selection"
                   :sorted-by.sync="sortedBy" responsive>
             <vk-table-column-select></vk-table-column-select>
             <vk-table-column title="Datum" cell="date" shrinked>
@@ -13,7 +13,7 @@
             <vk-table-column title="Projekt" cell="projects">
                 <div slot-scope="cell">
                     <model-select class=".uk-width-1-2" :options="cell.cell"
-                                  v-model="item"
+                                  v-model="projectitem"
                                   placeholder="Projekt auswählen"
                                   style="min-height: 0px !important;">
                     </model-select>
@@ -22,7 +22,7 @@
             <vk-table-column title="Task" cell="tasks">
                 <div slot-scope="cell">
                     <model-select class=".uk-width-1-2" :options="cell.cell"
-                                  v-model="item"
+                                  v-model="taskitem"
                                   placeholder="Task auswählen"
                                   style="min-height: 0px !important;">
                     </model-select>
@@ -42,6 +42,8 @@
                 </div>
             </vk-table-column>
         </vk-table>
+        <vk-button class="uk-button-primary" v-on:click="handleAdd">Hinzufügen</vk-button>
+        <vk-button v-on:click="handleDelete">Löschen</vk-button>
     </div>
 </template>
 
@@ -50,10 +52,13 @@ import LabelEdit from 'label-edit';
 import VueTimepicker from 'vue2-timepicker';
 import DatePicker from 'vuejs-datepicker';
 import { ModelSelect } from 'vue-search-select';
+import VkButton from 'vuikit/src/library/button/components/button';
+import axios from 'axios';
 
 export default {
   name: 'tableApp',
   components: {
+    VkButton,
     LabelEdit,
     VueTimepicker,
     DatePicker,
@@ -66,9 +71,21 @@ export default {
       sortedBy: { name: 'asc' },
       selection: [],
       format: 'hh:mm',
-      item: {
+      projectitem: {
         value: '',
         text: '',
+      },
+      taskitem: {
+        value: '',
+        text: '',
+      },
+      sampleRow: {
+        date: new Date(),
+        city: '',
+        state: '',
+        amount: { hh: '00', mm: '00' },
+        projects: [{ text: '', value: '' }],
+        tasks: [{ text: '', value: '' }],
       },
       options: [
         { text: 'tw', value: 'A' },
@@ -76,152 +93,15 @@ export default {
         { text: 'Three', value: 'C' },
       ],
       vogel: [
-        {
-          date: new Date(2019, 6, 6),
-          city: 'San Francisco',
-          state: 'CAA',
-          amount: { hh: '01', mm: '15' },
-          projects: [{ text: 'Projekt 1', value: '1' }],
-          tasks: [{ text: 'Task 1', value: '1' }],
-        },
-        {
-          date: new Date(2019, 6, 9),
-          city: 'New York',
-          state: 'NY',
-          amount: { hh: '00', mm: '30' },
-          projects: [{ text: 'Projekt 2', value: '2' }],
-          tasks: [{ text: 'Task 1', value: '1' }],
-        },
-        {
-          date: new Date(2019, 6, 4),
-          city: 'Los Angeles',
-          state: 'CA',
-          amount: { hh: '02', mm: '00' },
-          projects: [{ text: 'Projekt 3', value: '3' }],
-          tasks: [{ text: 'Task 1', value: '1' }],
-        },
       ],
       selected: [],
       search: '',
-      isMobile: false,
-      headers: [
-        {
-          text: 'Dessert (100g serving)',
-          align: 'left',
-          value: 'name',
-        },
-        {
-          text: 'Calories',
-          value: 'calories',
-        },
-        {
-          text: 'Fat (g)',
-          value: 'fat',
-        },
-        {
-          text: 'Carbs (g)',
-          value: 'carbs',
-        },
-        {
-          text: 'Protein (g)',
-          value: 'protein',
-        },
-        {
-          text: 'Iron (%)',
-          value: 'iron',
-        },
-      ],
-      desserts: [{
-        value: false,
-        name: 'Frozen Yogurt',
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        iron: '1%',
-      },
-      {
-        value: false,
-        name: 'Ice cream sandwich',
-        calories: 237,
-        fat: 9.0,
-        carbs: 37,
-        protein: 4.3,
-        iron: '1%',
-      },
-      {
-        value: false,
-        name: 'Eclair',
-        calories: 262,
-        fat: 16.0,
-        carbs: 23,
-        protein: 6.0,
-        iron: '7%',
-      },
-      {
-        value: false,
-        name: 'Cupcake',
-        calories: 305,
-        fat: 3.7,
-        carbs: 67,
-        protein: 4.3,
-        iron: '8%',
-      },
-      {
-        value: false,
-        name: 'Gingerbread',
-        calories: 356,
-        fat: 16.0,
-        carbs: 49,
-        protein: 3.9,
-        iron: '16%',
-      },
-      {
-        value: false,
-        name: 'Jelly bean',
-        calories: 375,
-        fat: 0.0,
-        carbs: 94,
-        protein: 0.0,
-        iron: '0%',
-      },
-      {
-        value: false,
-        name: 'Lollipop',
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        protein: 0,
-        iron: '2%',
-      },
-      {
-        value: false,
-        name: 'Honeycomb',
-        calories: 408,
-        fat: 3.2,
-        carbs: 87,
-        protein: 6.5,
-        iron: '45%',
-      },
-      {
-        value: false,
-        name: 'Donut',
-        calories: 452,
-        fat: 25.0,
-        carbs: 51,
-        protein: 4.9,
-        iron: '22%',
-      },
-      {
-        value: false,
-        name: 'KitKat',
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: '6%',
-      }],
     };
+  },
+  watch: {
+    projectitem(val) {
+      this.getTasks(val.value);
+    },
   },
   methods: {
     onResize() {
@@ -251,6 +131,44 @@ export default {
       // select option from parent component
       this.item = this.options[0];
     },
+    handleAdd() {
+      this.vogel.push(this.sampleRow);
+    },
+    getTasks(project) {
+      if (project) {
+        axios.get(`${process.env.VUE_APP_API_URL}/api/task/${project}`, {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem('token')}`,
+          },
+        })
+          .then((response) => {
+            const result = response.data.map(item => ({
+              text: item.name,
+              value: item.id,
+            }));
+            this.sampleRow.tasks = result;
+            console.log(result);
+          });
+      }
+    },
+    handleDelete() {
+
+    },
+  },
+  beforeMount() {
+    // Hole alle Projekte für den User
+    axios.get(`${process.env.VUE_APP_API_URL}/api/project`, {
+      headers: {
+        Authorization: `Bearer ${window.localStorage.getItem('token')}`,
+      },
+    })
+      .then((response) => {
+        const result = response.data.map(item => ({
+          text: item.name,
+          value: item.id,
+        }));
+        this.sampleRow.projects = result;
+      });
   },
 };
 </script>
